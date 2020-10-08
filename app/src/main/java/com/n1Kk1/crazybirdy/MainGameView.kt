@@ -5,19 +5,23 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.view.SurfaceView
 
-class MainGameView(context: Context?, private var x: Int = 0, private var y: Int = 0) : SurfaceView(context), Runnable {
+class MainGameView(context: Context?, private val x: Int = 0, private val y: Int = 0) : SurfaceView(context), Runnable {
 
     private lateinit var thread: Thread
     private lateinit var canvas: Canvas
-    private val screenRatioX = 2080f / x
+    private lateinit var paint: Paint
+    private lateinit var background1: GameBackground
+    private lateinit var background2: GameBackground
+    private val screenRatioX = 2088f / x
     private val screenRatioY = 1080f / y
-    private var background1: GameBackground = GameBackground(x, y, resources)
-    private var background2: GameBackground = GameBackground(x, y, resources)
-    private var isPlaying = true
-    private var paint = Paint()
+    private var isPlaying = false
 
     override fun run() {
+        background1 = GameBackground(x, y, resources)
+        background2 = GameBackground(x, y, resources)
         background2.x = x
+        paint = Paint()
+
         while (isPlaying){
             update()
             draw()
@@ -40,14 +44,10 @@ class MainGameView(context: Context?, private var x: Int = 0, private var y: Int
     }
 
     private fun draw() {
-        println(holder.surface.isValid)
         if(holder.surface.isValid){
             canvas = holder.lockCanvas()
             canvas.drawBitmap(background1.background, background1.x.toFloat(), background1.y.toFloat(), paint)
             canvas.drawBitmap(background2.background, background2.x.toFloat(), background2.y.toFloat(), paint)
-
-            println(holder.surface.isValid)
-
             holder.unlockCanvasAndPost(canvas)
         }
     }

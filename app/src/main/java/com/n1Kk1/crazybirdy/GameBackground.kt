@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
 
-class GameBackground internal constructor(
+class GameBackground (
     screenX: Int,
     screenY: Int,
     res: Resources?
