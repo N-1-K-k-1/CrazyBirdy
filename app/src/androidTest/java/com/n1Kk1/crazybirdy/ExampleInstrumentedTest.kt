@@ -1,4 +1,4 @@
-package com.N1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

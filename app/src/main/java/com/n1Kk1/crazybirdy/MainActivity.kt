@@ -1,4 +1,4 @@
-package com.N1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
