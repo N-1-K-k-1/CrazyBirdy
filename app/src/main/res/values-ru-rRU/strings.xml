@@ -2,5 +2,5 @@
 <resources>
     <string name="app_name">CrazyBirdy</string>
     <string name="tapToPlay">Нажмите, чтобы играть</string>
-    <string name="highScore">Реко</string>
+    <string name="highScore">Рекорд</string>
 </resources>

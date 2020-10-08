@@ -9,9 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.n1Kk1.crazybirdy.MainActivity"
-            android:theme="@style/AppTheme.noActionBar"
-            android:screenOrientation="landscape">
+        <activity android:name=".MainGameActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.noActionBar">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
