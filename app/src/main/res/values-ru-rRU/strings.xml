@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CrazyBirdy</string>
+    <string name="tapToPlay">Нажмите, чтобы играть</string>
+    <string name="highScore">Реко</string>
+</resources>
