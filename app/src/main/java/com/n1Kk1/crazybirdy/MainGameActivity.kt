@@ -23,9 +23,6 @@ class MainGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        @Suppress("DEPRECATION")
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
         metrics = windowManager.currentWindowMetrics
 
         windowInsets = metrics.windowInsets
@@ -50,6 +47,16 @@ class MainGameActivity : AppCompatActivity() {
         gameView = MainGameView(this, legacySize.width, legacySize.height)
 
         setContentView(gameView)
+
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
     }
 
     override fun onPause() {
