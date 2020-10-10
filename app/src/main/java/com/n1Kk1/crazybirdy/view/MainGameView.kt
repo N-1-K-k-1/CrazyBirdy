@@ -1,15 +1,20 @@
-package com.n1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy.view
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.MotionEvent.INVALID_POINTER_ID
 import android.view.SurfaceView
+import com.n1Kk1.crazybirdy.objects.Bird
+import com.n1Kk1.crazybirdy.objects.Coin
+import com.n1Kk1.crazybirdy.objects.Fly
 import kotlin.math.roundToInt
 import kotlin.random.Random
+import kotlinx.coroutines.*
 
 
 @SuppressLint("ViewConstructor")
@@ -23,29 +28,40 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
     private lateinit var bird: Bird
     private lateinit var fly: MutableList<Fly>
     private lateinit var killedFlies: MutableList<Fly>
+    private lateinit var coins: MutableList<Coin>
+    private lateinit var collectedCoins: MutableList<Coin>
     private val screenRatioX = 2088f / x
     private val screenRatioY = 1080f / y
     private var isPlaying = false
     private var isEating = false
+    private var isGameOver = false
     private var mLastTouchX = 0
     private var mLastTouchY = 0
     private var mActivePointerId = INVALID_POINTER_ID
     private var timeOut = 0
     private var timer = 0
+    private var coinTimeOut = 0
+    private var coinTimer = 0
+    private var score = 0
 
     override fun run() {
         background1 = GameBackground(x, y, resources)
         background2 = GameBackground(x, y, resources)
         bird = Bird(x, y, resources)
         fly = mutableListOf()
-        fly.add(Fly(Random.nextInt(bird.height,y - bird.height), x, y, resources))
-        timeOut = Random.nextInt(30, 60)
-
+        fly.add(Fly(Random.nextInt(bird.height, y - bird.height), x, y, resources))
         killedFlies = mutableListOf()
+        timeOut = Random.nextInt(30, 60)
+        coins = mutableListOf()
+        coins.add(Coin(Random.nextInt(bird.height, y - bird.height), x, y, resources))
+        collectedCoins = mutableListOf()
+        coinTimeOut = Random.nextInt(20, 50)
         mLastTouchX = bird.x
         mLastTouchY = bird.y
         background2.x = x
         paint = Paint()
+        paint.textSize = 128F
+        paint.color = Color.WHITE
 
         while (isPlaying){
             update()
@@ -122,60 +138,118 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
             bird.y = y - bird.height
 
         if (timer == timeOut) {
-            fly.add(Fly(Random.nextInt(bird.height,y - bird.height), x, y, resources))
+            fly.add(Fly(Random.nextInt(bird.height, y - bird.height), x, y, resources))
             timeOut = Random.nextInt((30 - (difficulty * 0.23)).roundToInt(), (60 - (difficulty * 0.23)).roundToInt())
             timer = 0
         }
 
         fly.forEach {
             it.x -= it.speed
-            if (it.x + it.width < 0) {
-                /*val bound = (30 * screenRatioX).toInt()
-                it.speed = Random.nextInt(bound)
-
-                if (it.speed < 15 * screenRatioX)
-                    it.speed = (15 * screenRatioX * difficulty).toInt()*/
-
-                it.x = x
-            }
 
             if ((it.getRectCollision().left <= bird.getRect().right) && (it.getRectCollision().right >= bird.getRect().left)
                     && (((it.getRectCollision().top) in (bird.getRect().bottom..bird.getRect().top)) || ((it.getRectCollision().bottom) in (bird.getRect().bottom..bird.getRect().top)))
                     || Rect.intersects(it.getRectCollision(), bird.getRect()))
                 isEating = true
 
-            if ((bird.getRect().left in (it.getRectCollision().left..it.getRectCollision().right)) && (it.getRectCollision().centerY() in (bird.getRect().bottom..bird.getRect().top))) {
+            if ((bird.getRect().left in (it.getRectCollision().left..it.getRectCollision().right)) && (it.getRectCollision().centerY() in (bird.getRect().bottom..bird.getRect().top)))
                 killedFlies.add(it)
+
+            if (it.x + it.width < 0)
+                isGameOver = true
+
+        }
+
+        if (coinTimer == coinTimeOut) {
+            coins.add(Coin(Random.nextInt(bird.height, y - bird.height), x, y, resources))
+            coinTimeOut = Random.nextInt(30, 80)
+            coinTimer = 0
+        }
+
+        val trash = mutableListOf<Coin>()
+
+        coins.forEach {
+            it.x -= (10 * screenRatioX).toInt()
+
+            if (Rect.intersects(bird.getRectCollision(), it.getRectCollision())) {
+                collectedCoins.add(it)
+                score++
+            }
+
+            if (it.x + it.width < 0)
+                trash.add(it)
+        }
+
+        runBlocking {
+            killedFlies.forEach { it1 ->
+                launch {
+                    fly.remove(it1)
+                }
+            }
+
+            trash.forEach { coin ->
+                launch {
+                    coins.remove(coin)
+                }
+            }
+
+            collectedCoins.forEach { coin ->
+                launch {
+                    coins.remove(coin)
+                }
             }
         }
 
-        killedFlies.forEach {
-            fly.remove(it)
-        }
-
         timer++
+        coinTimer++
         if (difficulty <= 100.0)
             difficulty += 0.05
-
-        println(difficulty)
-
     }
 
 
     private fun draw() {
         if(holder.surface.isValid){
             canvas = holder.lockCanvas()
-            canvas.drawBitmap(background1.background, background1.x.toFloat(), background1.y.toFloat(), paint)
-            canvas.drawBitmap(background2.background, background2.x.toFloat(), background2.y.toFloat(), paint)
 
-            fly.forEach {
-                canvas.drawBitmap(it.getFly(), it.x.toFloat(), it.y.toFloat(), paint)
+            runBlocking {
+                launch {
+                    canvas.drawBitmap(background1.background, background1.x.toFloat(), background1.y.toFloat(), paint)
+                }
+
+                launch {
+                    canvas.drawBitmap(background2.background, background2.x.toFloat(), background2.y.toFloat(), paint)
+                }
+
+                coins.forEach { coin ->
+                    launch {
+                        canvas.drawBitmap(coin.getCoin(), coin.x.toFloat(), coin.y.toFloat(), paint)
+                    }
+                }
+
+                fly.forEach { fly ->
+                    launch {
+                        canvas.drawBitmap(fly.getFly(), fly.x.toFloat(), fly.y.toFloat(), paint)
+                    }
+                }
+
+                launch {
+                    canvas.drawText(score.toString(), (x / 2).toFloat(), 160F, paint)
+                }
+
+                if (isEating)
+                    launch {
+                        canvas.drawBitmap(bird.getBirdOpenMouth(), bird.x.toFloat(), bird.y.toFloat(), paint)
+                    }
+                else
+                    launch {
+                        canvas.drawBitmap(bird.getBird(), bird.x.toFloat(), bird.y.toFloat(), paint)
+                    }
             }
 
-            if (isEating)
-                canvas.drawBitmap(bird.getBirdOpenMouth(), bird.x.toFloat(), bird.y.toFloat(), paint)
-            else
-                canvas.drawBitmap(bird.getBird(), bird.x.toFloat(), bird.y.toFloat(), paint)
+            if (isGameOver) {
+                isPlaying = false
+                holder.unlockCanvasAndPost(canvas)
+                return
+            }
 
             holder.unlockCanvasAndPost(canvas)
         }

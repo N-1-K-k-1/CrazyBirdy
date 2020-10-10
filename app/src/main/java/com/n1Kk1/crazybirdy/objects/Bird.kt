@@ -1,9 +1,10 @@
-package com.n1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy.objects
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
+import com.n1Kk1.crazybirdy.R
 
 class Bird(screenX: Int, screenY: Int, res: Resources?) {
 
@@ -94,13 +95,13 @@ class Bird(screenX: Int, screenY: Int, res: Resources?) {
     }
 
     fun getRect(): Rect {
-        rect.set(((x + width - 40) * screenRatioX).toInt(), ((y + height / 1.1)* screenRatioY).toInt(), ((x + width + 100) * screenRatioX).toInt(), ((y + height / 1.7) * screenRatioY).toInt())
+        rect.set(((x + width - 40) * screenRatioX).toInt(), ((y + height / 1.1) * screenRatioY).toInt(), ((x + width + 100) * screenRatioX).toInt(), ((y + height / 1.7) * screenRatioY).toInt())
 
         return rect
     }
 
     fun getRectCollision(): Rect {
-        return Rect(x, y, x + width, y + height)
+        return Rect(x, y, x + width - (10 * screenRatioX).toInt(), y + height)
     }
 
 }

@@ -1,8 +1,9 @@
-package com.n1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy.view
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.n1Kk1.crazybirdy.R
 
 
 class GameBackground (

@@ -1,9 +1,11 @@
-package com.n1Kk1.crazybirdy
+package com.n1Kk1.crazybirdy.objects
 
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Rect
+import com.n1Kk1.crazybirdy.view.MainGameView
+import com.n1Kk1.crazybirdy.R
 import kotlin.math.roundToInt
 import kotlin.random.Random
 
@@ -37,7 +39,7 @@ class Fly(var y: Int, screenX: Int, screenY: Int, res: Resources?) {
         fly1 = Bitmap.createScaledBitmap(fly1, width, height, false)
         fly2 = Bitmap.createScaledBitmap(fly2, width, height, false)
 
-        x = -height
+        x = screenX
     }
 
     fun getFly(): Bitmap {

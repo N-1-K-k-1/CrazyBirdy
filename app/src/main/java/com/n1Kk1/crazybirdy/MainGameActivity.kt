@@ -6,11 +6,11 @@ import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.util.Size
-import android.view.Window
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.appcompat.app.AppCompatActivity
+import com.n1Kk1.crazybirdy.view.MainGameView
 
 
 class MainGameActivity : AppCompatActivity() {
