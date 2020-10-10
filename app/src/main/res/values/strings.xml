@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">CrazyBirdy</string>
     <string name="tapToPlay">Tap to play</string>
-    <string name="highScore">High Score</string>
+    <string name="highScore">High Score: %1$d</string>
+    <string name="youScored">You scored %1$d points</string>
+    <string name="youScored1">You scored %1$d points</string>
+    <string name="youScored2">You scored %1$d point</string>
+    <string name="tryNotTo">Try not to miss flies</string>
 </resources>

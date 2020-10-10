@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.n1Kk1.crazybirdy.view.MainGameView
+import io.paperdb.Paper
 
 
 class MainGameActivity : AppCompatActivity() {

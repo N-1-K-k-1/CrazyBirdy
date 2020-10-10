@@ -2,5 +2,9 @@
 <resources>
     <string name="app_name">CrazyBirdy</string>
     <string name="tapToPlay">Нажмите, чтобы играть</string>
-    <string name="highScore">Рекорд</string>
+    <string name="highScore">Рекорд: %1$d</string>
+    <string name="youScored">Вы набрали %1$d очков</string>
+    <string name="youScored1">Вы набрали %1$d очка</string>
+    <string name="youScored2">Вы набрали %1$d очко</string>
+    <string name="tryNotTo">Старайтесь ловить мух</string>
 </resources>
