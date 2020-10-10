@@ -42,7 +42,6 @@ class MainGameActivity : AppCompatActivity() {
         @Suppress("DEPRECATION")
         windowManager.defaultDisplay.getSize(point)
         println("${point.x} ${point.y}")
-
         println("${legacySize.width} ${legacySize.height}")
         gameView = MainGameView(this, legacySize.width, legacySize.height)
 
