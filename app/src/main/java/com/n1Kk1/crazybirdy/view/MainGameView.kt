@@ -250,7 +250,7 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
         timer++
         coinTimer++
         if (difficulty <= 100.0)
-            difficulty += 0.05
+            difficulty += 0.1
     }
 
 
@@ -367,13 +367,8 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
         }
     }
 
-    companion object {
-        @JvmStatic
-        var difficulty: Double = 1.0
-    }
-
-    private fun <T> drawObject(arr: MutableList<T>) {
-        arr.forEach {
+    private fun <T> drawObject(objects: MutableList<T>) {
+        objects.forEach {
             if (it is Coin)
                 canvas.drawBitmap(it.getCoin(), it.x.toFloat(), it.y.toFloat(), paint)
             if (it is Fly)
@@ -381,4 +376,8 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
         }
     }
 
+    companion object {
+        @JvmStatic
+        var difficulty: Double = 1.0
+    }
 }
