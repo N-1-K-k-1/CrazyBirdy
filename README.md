@@ -9,6 +9,7 @@
  The record of collected coins is stored in the application cache.
  
  ## Video
+ [![Watch the video](https://imgur.com/pFYwq9r)](https://youtu.be/C_f0sJQi_qk)
  
  ## Languages, libraries and tools used
  * [Kotlin](https://kotlinlang.org/)
