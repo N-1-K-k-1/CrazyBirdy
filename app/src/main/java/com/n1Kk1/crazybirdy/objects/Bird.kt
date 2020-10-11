@@ -95,7 +95,7 @@ class Bird(screenX: Int, screenY: Int, res: Resources?) {
     }
 
     fun getRect(): Rect {
-        rect.set(((x + width - 40) * screenRatioX).toInt(), ((y + height / 1.1) * screenRatioY).toInt(), ((x + width + 100) * screenRatioX).toInt(), ((y + height / 1.7) * screenRatioY).toInt())
+        rect.set(((x + width - 40)), (((y + height / 1.1).toInt())), ((x + width + 100)), (y + height / 1.7).toInt())
 
         return rect
     }

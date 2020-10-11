@@ -1,15 +1,13 @@
 package com.n1Kk1.crazybirdy
 
 import android.content.Intent
-import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.media.SoundPool
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -62,8 +60,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (!isMute)
+        if (!isMute) {
             music.start()
+        }
 
         highScore.text = getString(R.string.highScore, Paper.book().read("highScore", 0))
 
@@ -72,7 +71,9 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
 
-        if (!isMute && music.isPlaying)
+        if (!isMute && music.isPlaying) {
             music.stop()
+            music.prepareAsync()
+        }
     }
 }

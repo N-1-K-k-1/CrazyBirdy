@@ -11,7 +11,6 @@ import android.view.WindowManager
 import android.view.WindowMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.n1Kk1.crazybirdy.view.MainGameView
-import io.paperdb.Paper
 
 
 class MainGameActivity : AppCompatActivity() {
@@ -24,27 +23,30 @@ class MainGameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        metrics = windowManager.currentWindowMetrics
-
-        windowInsets = metrics.windowInsets
-        insets = windowInsets.getInsetsIgnoringVisibility(
-            WindowInsets.Type.navigationBars()
-                    or WindowInsets.Type.displayCutout()
-        )
-        val insetsWidth = insets.right + insets.left
-        val insetsHeight = insets.top + insets.bottom
-        val bounds: Rect = metrics.bounds
-        val legacySize = Size(
-            bounds.width() - insetsWidth,
-            bounds.height() - insetsHeight
-        )
-
-        val point: Point = Point()
-        @Suppress("DEPRECATION")
-        windowManager.defaultDisplay.getSize(point)
-        println("${point.x} ${point.y}")
-        println("${legacySize.width} ${legacySize.height}")
-        gameView = MainGameView(this, legacySize.width, legacySize.height)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            metrics = windowManager.currentWindowMetrics
+            windowInsets = metrics.windowInsets
+            insets = windowInsets.getInsetsIgnoringVisibility(
+                    WindowInsets.Type.navigationBars()
+                            or WindowInsets.Type.displayCutout()
+            )
+            val insetsWidth = insets.right + insets.left
+            val insetsHeight = insets.top + insets.bottom
+            val bounds: Rect = metrics.bounds
+            val legacySize = Size(
+                    bounds.width() - insetsWidth,
+                    bounds.height() - insetsHeight
+            )
+            println("${legacySize.width} ${legacySize.height}")
+            gameView = MainGameView(this, legacySize.width, legacySize.height)
+        }
+        else {
+            val point: Point = Point()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getSize(point)
+            println("${point.x} ${point.y}")
+            gameView = MainGameView(this, point.x, point.y)
+        }
 
         setContentView(gameView)
 

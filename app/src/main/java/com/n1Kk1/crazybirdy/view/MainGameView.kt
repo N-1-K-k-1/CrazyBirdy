@@ -1,7 +1,6 @@
 package com.n1Kk1.crazybirdy.view
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -13,6 +12,7 @@ import android.media.SoundPool
 import android.view.MotionEvent
 import android.view.MotionEvent.INVALID_POINTER_ID
 import android.view.SurfaceView
+import androidx.appcompat.app.AppCompatActivity
 import com.n1Kk1.crazybirdy.MainActivity
 import com.n1Kk1.crazybirdy.R
 import com.n1Kk1.crazybirdy.objects.Bird
@@ -267,16 +267,13 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
                     canvas.drawBitmap(background2.background, background2.x.toFloat(), background2.y.toFloat(), paint)
                 }
 
-                coins.forEach { coin ->
-                    launch {
-                        canvas.drawBitmap(coin.getCoin(), coin.x.toFloat(), coin.y.toFloat(), paint)
-                    }
+                launch {
+                    drawObject(coins)
                 }
 
-                fly.forEach { fly ->
-                    launch {
-                        canvas.drawBitmap(fly.getFly(), fly.x.toFloat(), fly.y.toFloat(), paint)
-                    }
+
+                launch {
+                    drawObject(fly)
                 }
 
                 launch {
@@ -296,6 +293,7 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
                         canvas.drawBitmap(bird.getBird(), bird.x.toFloat(), bird.y.toFloat(), paint)
                     }
             }
+
 
             if (isGameOver) {
                 isPlaying = false
@@ -335,7 +333,7 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
                     Thread.sleep(3000)
                     val intent = Intent(context, MainActivity::class.java)
                     context.startActivity(intent)
-                    (context as Activity).finish()
+                    (context as AppCompatActivity).finish()
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
@@ -372,6 +370,15 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
     companion object {
         @JvmStatic
         var difficulty: Double = 1.0
+    }
+
+    private fun <T> drawObject(arr: MutableList<T>) {
+        arr.forEach {
+            if (it is Coin)
+                canvas.drawBitmap(it.getCoin(), it.x.toFloat(), it.y.toFloat(), paint)
+            if (it is Fly)
+                canvas.drawBitmap(it.getFly(), it.x.toFloat(), it.y.toFloat(), paint)
+        }
     }
 
 }
