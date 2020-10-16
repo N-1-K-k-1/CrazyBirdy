@@ -37,9 +37,7 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
     private var background2: GameBackground
     private var bird: Bird
     private var fly: MutableList<Fly>
-    private var killedFlies: MutableList<Fly>
     private var coins: MutableList<Coin>
-    private var collectedCoins: MutableList<Coin>
     private var sounds: SoundPool
     private val screenRatioX = x / 2088f
     private val screenRatioY = y / 1080f
@@ -66,11 +64,9 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
         bird = Bird(x, y, resources)
         fly = mutableListOf()
         fly.add(Fly(Random.nextInt(bird.height, y - bird.height), x, y, resources))
-        killedFlies = mutableListOf()
         timeOut = Random.nextInt(30, 60)
         coins = mutableListOf()
         coins.add(Coin(Random.nextInt(bird.height, y - bird.height), x, y, resources))
-        collectedCoins = mutableListOf()
         coinTimeOut = Random.nextInt(20, 50)
         mLastTouchX = bird.x
         mLastTouchY = bird.y
@@ -191,7 +187,7 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
                         if (!isMute)
                             sounds.play(soundEat, 1F, 1F, 0, 0, 1F)
 
-                        killedFlies.add(it)
+                        fly.remove(it)
                     }
 
                     if (it.x + it.width < 0) {
@@ -209,8 +205,6 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
             coinTimer = 0
         }
 
-        val trash = mutableListOf<Coin>()
-
         runBlocking {
             coins.forEach {
                 launch {
@@ -220,32 +214,12 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
                         if (!isMute)
                             sounds.play(sound, 1F, 1F, 0, 0, 1F)
 
-                        collectedCoins.add(it)
+                        coins.remove(it)
                         score++
                     }
 
                     if (it.x + it.width < 0)
-                        trash.add(it)
-                }
-            }
-        }
-
-        runBlocking {
-            killedFlies.forEach { it1 ->
-                launch {
-                    fly.remove(it1)
-                }
-            }
-
-            trash.forEach { coin ->
-                launch {
-                    coins.remove(coin)
-                }
-            }
-
-            collectedCoins.forEach { coin ->
-                launch {
-                    coins.remove(coin)
+                        coins.remove(it)
                 }
             }
         }
