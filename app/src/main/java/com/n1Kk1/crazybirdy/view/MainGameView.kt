@@ -31,16 +31,16 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
 
     private lateinit var thread: Thread
     private lateinit var canvas: Canvas
-    private lateinit var paint: Paint
-    private lateinit var paintStroke: Paint
-    private lateinit var background1: GameBackground
-    private lateinit var background2: GameBackground
-    private lateinit var bird: Bird
-    private lateinit var fly: MutableList<Fly>
-    private lateinit var killedFlies: MutableList<Fly>
-    private lateinit var coins: MutableList<Coin>
-    private lateinit var collectedCoins: MutableList<Coin>
-    private lateinit var sounds: SoundPool
+    private var paint: Paint
+    private var paintStroke: Paint
+    private var background1: GameBackground
+    private var background2: GameBackground
+    private var bird: Bird
+    private var fly: MutableList<Fly>
+    private var killedFlies: MutableList<Fly>
+    private var coins: MutableList<Coin>
+    private var collectedCoins: MutableList<Coin>
+    private var sounds: SoundPool
     private val screenRatioX = 2088f / x
     private val screenRatioY = 1080f / y
     private var isPlaying = false
