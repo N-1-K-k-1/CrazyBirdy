@@ -41,8 +41,8 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
     private var coins: MutableList<Coin>
     private var collectedCoins: MutableList<Coin>
     private var sounds: SoundPool
-    private val screenRatioX = 2088f / x
-    private val screenRatioY = 1080f / y
+    private val screenRatioX = x / 2088f
+    private val screenRatioY = y / 1080f
     private var isPlaying = false
     private var isEating = false
     private var isGameOver = false

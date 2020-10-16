@@ -30,8 +30,8 @@ class Fly(var y: Int, screenX: Int, screenY: Int, res: Resources?) {
         width /= 18
         height /= 18
 
-        screenRatioX = (2088f / screenX)
-        screenRatioY = (1080f / screenY)
+        screenRatioX = (screenX / 2088f)
+        screenRatioY = (screenY / 1080f)
 
         width *= (screenRatioX).toInt()
         height *= (screenRatioY).toInt()
