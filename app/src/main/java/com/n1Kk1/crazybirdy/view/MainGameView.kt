@@ -59,7 +59,8 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
     private var soundEat = 0
     private var soundOfDefeat = 0
 
-    override fun run() {
+    init {
+        difficulty = 1.0
         background1 = GameBackground(x, y, resources)
         background2 = GameBackground(x, y, resources)
         bird = Bird(x, y, resources)
@@ -93,7 +94,9 @@ class MainGameView(context: Context?, private val x: Int = 0, private val y: Int
         soundEat = sounds.load(context, R.raw.crunch, 2)
         soundOfDefeat = sounds.load(context, R.raw.sound_of_defeat, 1)
         isMute = Paper.book().read<Boolean>("isMute")
+    }
 
+    override fun run() {
         while (isPlaying){
             update()
             draw()
